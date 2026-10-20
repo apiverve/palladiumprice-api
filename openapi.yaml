@@ -1,0 +1,93 @@
+openapi: 3.0.4
+info:
+  title: Palladium Price
+  description: >-
+    Palladium Price tracks real-time spot rates for palladium per ounce, gram,
+    and kilogram in USD. It supplies 24-hour price changes and update
+    timestamps, while paid plans add custom currencies and 24-hour hourly
+    history.
+  termsOfService: https://apiverve.com/terms/
+  contact:
+    name: APIVerve Support
+    email: hello@apiverve.com
+    url: https://apiverve.com/contact
+  version: 1.0.0
+externalDocs:
+  description: Learn more about APIVerve
+  url: https://docs.apiverve.com?utm_source=openapi
+servers:
+  - url: https://api.apiverve.com/
+paths:
+  /v1/palladiumprice:
+    get:
+      summary: Palladium Price
+      description: >-
+        Get the current price of palladium. You can optionally specify a
+        currency (defaults to USD).
+      operationId: palladiumprice
+      parameters:
+        - name: currency
+          in: query
+          schema:
+            type: string
+          required: false
+          description: The currency to get the price in
+          example: USD
+        - name: hourly
+          in: query
+          schema:
+            type: boolean
+          required: false
+          description: Include hourly price data for the past 24 hours
+          example: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  error:
+                    type: string
+                    description: error
+                  data:
+                    type: object
+                    description: data
+              example:
+                status: ok
+                error: null
+                data:
+                  currency: USD
+                  gram: 40.08
+                  kilogram: 40075.88
+                  ounce: 1246.5
+                  lastUpdated: '2026-02-07T12:00:00.000Z'
+                  change24h: -8.2
+                  change24hPct: -0.65
+                  changeDirection: down
+                  high24h: 1259
+                  low24h: 1241.1
+                  formatted:
+                    ounce: $1,246.50
+                    gram: $40.08
+                    kilogram: $40,075.88
+                    ounceWords: one thousand, two hundred forty-seven dollars
+                    kilogramWords: forty thousand, seventy-six dollars
+        '401':
+          description: Your request was not authorized, or your API Key was invalid
+        '404':
+          description: Requested resource was not found
+        '500':
+          description: A server error has occurred, try again later
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+security:
+  - api_key: []
