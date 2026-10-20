@@ -1,0 +1,293 @@
+Palladium Price API
+============
+
+Palladium Price tracks real-time spot rates for palladium per ounce, gram, and kilogram in USD. It supplies 24-hour price changes and update timestamps, while paid plans add custom currencies and 24-hour hourly history.
+
+
+[![PyPI version](https://img.shields.io/pypi/v/apiverve-palladiumprice.svg)](https://pypi.org/project/apiverve-palladiumprice/)
+
+This is a Python wrapper for the [Palladium Price API](https://apiverve.com/marketplace/palladiumprice?utm_source=pypi&utm_medium=referral&utm_content=readme)
+
+---
+
+## Installation
+
+Using `pip`:
+
+```bash
+pip install apiverve-palladiumprice
+```
+
+Using `pip3`:
+
+```bash
+pip3 install apiverve-palladiumprice
+```
+
+---
+
+## Configuration
+
+Before using the Palladium Price API client, you have to setup your account and obtain your API Key.
+You can get it by signing up at [https://apiverve.com](https://apiverve.com?utm_source=pypi&utm_medium=referral&utm_content=readme)
+
+---
+
+## Quick Start
+
+Here's a simple example to get you started quickly:
+
+```python
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient
+
+# Initialize the client with your APIVerve API key
+api = PalladiumpriceAPIClient("[YOUR_API_KEY]")
+
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+
+try:
+    # Make the API call
+    result = api.execute(query)
+
+    # Print the result
+    print(result)
+except Exception as e:
+    print(f"Error: {e}")
+```
+
+---
+
+## Usage
+
+The Palladium Price API documentation is found here: [https://docs.apiverve.com/ref/palladiumprice](https://docs.apiverve.com/ref/palladiumprice?utm_source=pypi&utm_medium=referral&utm_content=readme).
+You can find parameters, example responses, and status codes documented here.
+
+### Setup
+
+```python
+# Import the client module
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient
+
+# Initialize the client with your APIVerve API key
+api = PalladiumpriceAPIClient("[YOUR_API_KEY]")
+```
+
+---
+
+## Perform Request
+
+Using the API client, you can perform requests to the API.
+
+###### Define Query
+
+```python
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+```
+
+###### Simple Request
+
+```python
+# Make a request to the API
+result = api.execute(query)
+
+# Print the result
+print(result)
+```
+
+###### Example Response
+
+```json
+{
+  "status": "ok",
+  "error": null,
+  "data": {
+    "currency": "USD",
+    "gram": 40.08,
+    "kilogram": 40075.88,
+    "ounce": 1246.5,
+    "lastUpdated": "2026-02-07T12:00:00.000Z",
+    "change24h": -8.2,
+    "change24hPct": -0.65,
+    "changeDirection": "down",
+    "high24h": 1259,
+    "low24h": 1241.1,
+    "formatted": {
+      "ounce": "$1,246.50",
+      "gram": "$40.08",
+      "kilogram": "$40,075.88",
+      "ounceWords": "one thousand, two hundred forty-seven dollars",
+      "kilogramWords": "forty thousand, seventy-six dollars"
+    }
+  }
+}
+```
+
+---
+
+## Error Handling
+
+The API client provides comprehensive error handling through the `PalladiumpriceAPIClientError` exception. Here are some examples:
+
+### Basic Error Handling
+
+```python
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient, PalladiumpriceAPIClientError
+
+api = PalladiumpriceAPIClient("[YOUR_API_KEY]")
+
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+
+try:
+    result = api.execute(query)
+    print("Success!")
+    print(result)
+except PalladiumpriceAPIClientError as e:
+    print(f"API Error: {e.message}")
+    if e.status_code:
+        print(f"Status Code: {e.status_code}")
+    if e.response:
+        print(f"Response: {e.response}")
+```
+
+### Handling Specific Error Types
+
+```python
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient, PalladiumpriceAPIClientError
+
+api = PalladiumpriceAPIClient("[YOUR_API_KEY]")
+
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+
+try:
+    result = api.execute(query)
+
+    # Check for successful response
+    if result.get('status') == 'success':
+        print("Request successful!")
+        print(result.get('data'))
+    else:
+        print(f"API returned an error: {result.get('error')}")
+
+except PalladiumpriceAPIClientError as e:
+    # Handle API client errors
+    if e.status_code == 401:
+        print("Unauthorized: Invalid API key")
+    elif e.status_code == 429:
+        print("Rate limit exceeded")
+    elif e.status_code >= 500:
+        print("Server error - please try again later")
+    else:
+        print(f"API error: {e.message}")
+except Exception as e:
+    # Handle unexpected errors
+    print(f"Unexpected error: {str(e)}")
+```
+
+### Using Context Manager (Recommended)
+
+The client supports the context manager protocol for automatic resource cleanup:
+
+```python
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient, PalladiumpriceAPIClientError
+
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+
+# Using context manager ensures proper cleanup
+with PalladiumpriceAPIClient("[YOUR_API_KEY]") as api:
+    try:
+        result = api.execute(query)
+        print(result)
+    except PalladiumpriceAPIClientError as e:
+        print(f"Error: {e.message}")
+# Session is automatically closed here
+```
+
+---
+
+## Advanced Features
+
+### Debug Mode
+
+Enable debug logging to see detailed request and response information:
+
+```python
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient
+
+# Enable debug mode
+api = PalladiumpriceAPIClient("[YOUR_API_KEY]", debug=True)
+
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+
+# Debug information will be printed to console
+result = api.execute(query)
+```
+
+### Manual Session Management
+
+If you need to manually manage the session lifecycle:
+
+```python
+from apiverve_palladiumprice.apiClient import PalladiumpriceAPIClient
+
+api = PalladiumpriceAPIClient("[YOUR_API_KEY]")
+
+query = {
+    "currency": "USD",
+    "hourly": true
+}
+
+try:
+    result = api.execute(query)
+    print(result)
+finally:
+    # Manually close the session when done
+    api.close()
+```
+
+---
+
+## Customer Support
+
+Need any assistance? [Get in touch with Customer Support](https://apiverve.com/contact?utm_source=pypi&utm_medium=referral&utm_content=readme).
+
+---
+
+## Updates
+Stay up to date by following [@apiverveHQ](https://twitter.com/apiverveHQ) on Twitter.
+
+---
+
+## Legal
+
+All usage of the APIVerve website, API, and services is subject to the [APIVerve Terms of Service](https://apiverve.com/terms?utm_source=pypi&utm_medium=referral&utm_content=readme) and all legal documents and agreements.
+
+---
+
+## License
+Licensed under the MIT License (MIT)
+
+Copyright (&copy;) 2026 APIVerve, and EvlarSoft LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
