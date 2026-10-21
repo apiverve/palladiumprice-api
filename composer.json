@@ -1,0 +1,49 @@
+{
+    "name": "apiverve/palladiumprice",
+    "description": "Palladium Price tracks real-time spot rates for palladium per ounce, gram, and kilogram in USD. It supplies 24-hour price changes and update timestamps, while paid plans add custom currencies and 24-hour hourly history.",
+    "version": "1.2.2",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "APIVerve",
+            "email": "hello@apiverve.com",
+            "homepage": "https://apiverve.com"
+        }
+    ],
+    "keywords": [
+        "api",
+        "apiverve",
+        "palladiumprice",
+        "palladium price",
+        "palladium price api",
+        "palladium price tool",
+        "palladium price data",
+        "palladium price feed"
+    ],
+    "homepage": "https://apiverve.com/marketplace/palladiumprice?utm_source=php&utm_medium=referral&utm_content=homepage",
+    "support": {
+        "email": "hello@apiverve.com",
+        "docs": "https://docs.apiverve.com/ref/palladiumprice",
+        "source": "https://github.com/apiverve/palladiumprice-API/tree/main/php"
+    },
+    "require": {
+        "php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "APIVerve\\Palladiumprice\\": "php/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "APIVerve\\Palladiumprice\\Tests\\": "php/tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
