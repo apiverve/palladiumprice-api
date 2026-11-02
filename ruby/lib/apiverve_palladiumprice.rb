@@ -4,6 +4,6 @@ require_relative "apiverve_palladiumprice/client"
 
 module APIVerve
   module Palladiumprice
-    VERSION = "1.2.3"
+    VERSION = "1.2.4"
   end
 end
